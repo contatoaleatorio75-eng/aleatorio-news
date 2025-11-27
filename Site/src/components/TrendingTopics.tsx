@@ -1,0 +1,28 @@
+
+import React from 'react';
+
+interface TrendingTopicsProps {
+  topics: string[];
+  selectedTopic: string | null;
+  onTopicClick: (topic: string) => void;
+}
+
+export const TrendingTopics: React.FC<TrendingTopicsProps> = ({ topics, selectedTopic, onTopicClick }) => {
+  return (
+    <div className="flex overflow-x-auto space-x-3 pb-3 -mx-4 px-4">
+      {topics.map((topic) => (
+        <button
+          key={topic}
+          onClick={() => onTopicClick(topic)}
+          className={`px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors duration-200
+            ${selectedTopic === topic
+              ? 'bg-yellow-500 text-slate-900 shadow-lg'
+              : 'bg-slate-700 text-gray-200 hover:bg-slate-600'
+            }`}
+        >
+          {topic}
+        </button>
+      ))}
+    </div>
+  );
+};

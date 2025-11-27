@@ -1,0 +1,91 @@
+# Guia de Publicação - ALEATORIO NEWS
+
+Este guia explica como colocar seu site no GitHub e publicá-lo na internet para que todos possam acessar.
+
+## Parte 1: Instalar o Git (Se não tiver)
+
+Como vimos anteriormente que o comando `git` não foi reconhecido, você precisa instalá-lo:
+
+1.  Baixe o Git: [git-scm.com/download/win](https://git-scm.com/download/win)
+2.  Instale (pode clicar em "Next" em todas as opções padrão).
+3.  **Importante:** Após instalar, feche e abra o PowerShell novamente.
+4.  Teste se funcionou digitando: `git --version`
+
+## Parte 2: Subir para o GitHub
+
+### 1. Criar Repositório no GitHub
+1.  Acesse [github.com](https://github.com) e faça login.
+2.  Clique no **+** (canto superior direito) -> **New repository**.
+3.  Nome: `aleatorio-news` (ou o que preferir).
+4.  Deixe como **Public**.
+5.  **Não** marque "Initialize with README".
+6.  Clique em **Create repository**.
+
+### 2. Configurar o Git no seu Computador
+Abra o PowerShell e vá para a pasta do projeto:
+
+```powershell
+cd C:\projects\Site
+```
+
+Execute estes comandos (um por um):
+
+```powershell
+# Inicializar o git
+git init
+
+# Adicionar todos os arquivos
+git add .
+
+# Criar o primeiro "save" (commit)
+git commit -m "Primeira versão do site"
+
+# Renomear a branch principal para main
+git branch -M main
+
+# Conectar com o GitHub (SUBSTITUA PELO SEU LINK!)
+# O link aparece na página do GitHub que você acabou de criar
+git remote add origin https://github.com/SEU_USUARIO/aleatorio-news.git
+
+# Enviar os arquivos
+git push -u origin main
+```
+
+> **Nota:** Se for a primeira vez, o Git pode pedir para você fazer login. Uma janela abrirá para você autorizar.
+
+## Parte 3: Publicar o Site (Hospedagem)
+
+A maneira mais fácil e gratuita para sites React/Vite é usar a **Vercel**.
+
+### 1. Criar conta na Vercel
+1.  Acesse [vercel.com](https://vercel.com).
+2.  Clique em **Sign Up**.
+3.  Escolha **Continue with GitHub**.
+
+### 2. Importar o Projeto
+1.  No painel da Vercel, clique em **Add New...** -> **Project**.
+2.  Você verá seu repositório `aleatorio-news` na lista (se conectou com GitHub).
+3.  Clique em **Import**.
+
+### 3. Configurar a API Key (MUITO IMPORTANTE)
+Na tela de configuração do projeto ("Configure Project"):
+
+1.  Procure a seção **Environment Variables**.
+2.  Adicione sua chave:
+    *   **Key:** `VITE_GEMINI_API_KEY`
+    *   **Value:** `Sua_Chave_Começando_Com_AIza...` (a mesma do .env.local)
+3.  Clique em **Add**.
+
+### 4. Deploy
+1.  Clique em **Deploy**.
+2.  Aguarde alguns instantes (1-2 minutos).
+3.  Pronto! Você receberá um link (ex: `aleatorio-news.vercel.app`) para compartilhar com o mundo. 🚀
+
+---
+
+## Resumo
+
+1.  **Git:** Ferramenta para salvar versões do código.
+2.  **GitHub:** Site para guardar seu código na nuvem.
+3.  **Vercel:** Site para hospedar e publicar seu site.
+4.  **Environment Variables:** Onde você guarda senhas (API Key) de forma segura na Vercel.
