@@ -8,6 +8,7 @@ import { NewsCard } from './components/NewsCard';
 import { AdPlaceholder } from './components/AdPlaceholder';
 import { Spinner } from './components/Spinner';
 import { getNewsData, getTickerData } from './services/geminiService';
+import { initializeAdSense } from './utils/adsense';
 import type { NewsArticle, TickerData } from './types';
 
 const FIXED_CATEGORIES = ["Ciência", "Tecnologia", "Atualidades"];
@@ -20,7 +21,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  
+
   const fetchNewsAndTopics = useCallback(async (topic?: string | null) => {
     setIsLoading(true);
     setError(null);
@@ -46,7 +47,7 @@ const App: React.FC = () => {
   const fetchTicker = useCallback(async () => {
     try {
       const data = await getTickerData();
-      if(data) {
+      if (data) {
         setTickerData(data);
       }
     } catch (err) {
@@ -55,6 +56,10 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // Initialize Google AdSense
+    initializeAdSense();
+
+    // Fetch initial data
     fetchNewsAndTopics();
     fetchTicker();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,7 +151,7 @@ const App: React.FC = () => {
       <footer className="bg-slate-800 text-center p-6 text-sm text-slate-400">
         <p className="mb-2">&copy; {new Date().getFullYear()} ALEATORIONEWS.COM.BR - Todos os direitos reservados.</p>
         <p className="text-xs">
-          Todo o conteúdo deste site é gerado por inteligência artificial e destina-se a fins de entretenimento e informação. 
+          Todo o conteúdo deste site é gerado por inteligência artificial e destina-se a fins de entretenimento e informação.
           As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual.
         </p>
       </footer>
