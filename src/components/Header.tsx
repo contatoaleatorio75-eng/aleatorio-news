@@ -12,7 +12,7 @@ export const Header: React.FC = () => {
             className="w-12 h-12 rounded-full object-cover shadow-sm ring-2 ring-cyan-500/20"
           />
           <h1 className="text-2xl font-extrabold text-slate-900 tracking-wider">
-            ALEATORIO <span className="text-cyan-600">NEWS</span>
+            ALEATORIO<span className="text-cyan-600">NEWS</span>
           </h1>
         </div>
         <div className="hidden lg:flex items-center ml-4">
