@@ -66,7 +66,8 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             }
             retries--;
             if (retries === 0) {
-                throw new Error("Falha na comunicação com a IA após múltiplas tentativas. Verifique o console para mais detalhes.");
+                const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
+                throw new Error(`Falha na IA: ${errorMessage}`);
             }
             await new Promise(res => setTimeout(res, 1000));
         }
