@@ -83,9 +83,9 @@ const createLearnMoreSource = (title: string): Source[] => {
 };
 
 const generateImage = async (keywords: string[]): Promise<string> => {
-    // COST OPTIMIZATION: Always use Unsplash to save Gemini API calls (approx. 6 calls per user).
-    // The Gemini image generation code has been removed to ensure zero cost for images.
-    const fallbackImageUrl = `https://source.unsplash.com/800x600/?${keywords.map(k => encodeURIComponent(k)).join(',')}`;
+    // FIX: Unsplash source is deprecated. Switched to Pollinations.ai for reliable AI image generation.
+    const prompt = keywords.join(' ');
+    const fallbackImageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=800&height=600&seed=${Math.random()}`;
     return fallbackImageUrl;
 };
 

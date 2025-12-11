@@ -1,5 +1,5 @@
-
 import React from 'react';
+import logo from '../assets/logo.jpg';
 
 export const Header: React.FC = () => {
   return (
@@ -7,7 +7,7 @@ export const Header: React.FC = () => {
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
         <div className="flex items-center space-x-3">
           <img
-            src="/logo.jpg"
+            src={logo}
             alt="Aleatorio Logo"
             className="w-12 h-12 rounded-full object-cover shadow-sm ring-2 ring-cyan-500/20"
           />
