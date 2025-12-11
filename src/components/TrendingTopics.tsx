@@ -14,10 +14,10 @@ export const TrendingTopics: React.FC<TrendingTopicsProps> = ({ topics, selected
         <button
           key={topic}
           onClick={() => onTopicClick(topic)}
-          className={`px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors duration-200
+          className={`px-4 py-2 text-sm font-semibold rounded-full whitespace-nowrap transition-colors duration-200 border
             ${selectedTopic === topic
-              ? 'bg-yellow-500 text-slate-900 shadow-lg'
-              : 'bg-slate-700 text-gray-200 hover:bg-slate-600'
+              ? 'bg-yellow-500 text-slate-900 shadow-md border-yellow-500'
+              : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-slate-300'
             }`}
         >
           {topic}

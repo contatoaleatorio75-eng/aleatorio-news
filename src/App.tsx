@@ -125,7 +125,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-gray-50">
       <Header />
       {tickerData && <NewsTicker data={tickerData} />}
       <main className="container mx-auto px-4 py-8">
@@ -134,8 +134,8 @@ const App: React.FC = () => {
           selectedTopic={selectedTopic}
           onTopicClick={handleTopicClick}
         />
-        <div className="flex justify-between items-center my-6 border-b-2 border-slate-700 pb-4">
-          <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+        <div className="flex justify-between items-center my-6 border-b-2 border-slate-200 pb-4">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
             {selectedTopic ? selectedTopic : "Em Destaque"}
           </h1>
           <button
@@ -148,11 +148,11 @@ const App: React.FC = () => {
         </div>
         {renderContent()}
       </main>
-      <footer className="bg-slate-800 text-center p-6 text-sm text-slate-400">
+      <footer className="bg-white text-center p-6 text-sm text-slate-500 border-t border-slate-200">
         <p className="mb-2">&copy; {new Date().getFullYear()} ALEATORIONEWS.COM.BR - Todos os direitos reservados.</p>
         <p className="text-xs">
           Todo o conteúdo deste site é gerado por inteligência artificial e destina-se a fins de entretenimento e informação.
-          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.0 (Fix)
+          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.1 (Light)
         </p>
       </footer>
     </div>
