@@ -46,7 +46,7 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
     let retries = 3;
     while (retries > 0) {
         try {
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
@@ -66,23 +66,7 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             }
             retries--;
             if (retries === 0) {
-                let errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
-
-                // DIAGNOSTIC STEP: Try to list models to see what IS available
-                try {
-                    const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
-                    const modelsReq = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-                    if (modelsReq.ok) {
-                        const modelsData = await modelsReq.json();
-                        const modelNames = modelsData.models?.map((m: any) => m.name).join(", ") || "Nenhum modelo encontrado";
-                        errorMessage += ` | MODELOS DISPONÍVEIS NA SUA CONTA: ${modelNames}`;
-                    } else {
-                        errorMessage += ` | FALHA AO LISTAR MODELOS: Status ${modelsReq.status}`;
-                    }
-                } catch (diagErr) {
-                    console.error("Diagnosis failed", diagErr);
-                }
-
+                const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
                 throw new Error(`Falha na IA: ${errorMessage}`);
             }
             await new Promise(res => setTimeout(res, 1000));
