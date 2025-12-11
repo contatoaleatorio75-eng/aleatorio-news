@@ -11,7 +11,16 @@ export const MainStory: React.FC<MainStoryProps> = ({ article }) => {
   return (
     <div className="bg-white rounded-lg shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0 border border-slate-100">
       <div className="relative h-64 lg:h-auto">
-        <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover" />
+        <img
+          src={article.imageUrl}
+          alt={article.title}
+          className="w-full h-full object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            target.src = "https://images.unsplash.com/photo-1504711331083-9c895941bf81?w=800&q=80"; // Fallback Tech
+          }}
+        />
         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
       </div>
       <div className="p-6 md:p-8 flex flex-col justify-between">

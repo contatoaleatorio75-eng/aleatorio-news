@@ -10,7 +10,16 @@ interface NewsCardProps {
 export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full transform hover:-translate-y-1 transition-transform duration-300 border border-slate-100">
-      <img src={article.imageUrl} alt={article.title} className="w-full h-40 object-cover" />
+      <img
+        src={article.imageUrl}
+        alt={article.title}
+        className="w-full h-40 object-cover"
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.onerror = null;
+          target.src = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80"; // Fallback Tech Generic
+        }}
+      />
       <div className="p-4 flex flex-col flex-grow">
         <h3 className="text-lg font-bold text-slate-900 mb-2 flex-grow">{article.title}</h3>
         <p className="text-slate-600 text-sm mb-4 line-clamp-3">{article.content}</p>

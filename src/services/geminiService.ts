@@ -7,11 +7,13 @@ interface GeminiNewsResponse {
         title: string;
         content: string;
         imageKeywords: string[];
+        imageUrl?: string;
     };
     otherStories: {
         title: string;
         content: string;
         imageKeywords: string[];
+        imageUrl?: string;
     }[];
 }
 
@@ -31,33 +33,39 @@ const MOCK_NEWS: GeminiNewsResponse = {
     mainStory: {
         title: "A Revolução Silenciosa da IA no Cotidiano: O que Esperar do Futuro Próximo?",
         content: "Enquanto muitos focam nos robôs de ficção científica, a verdadeira revolução da Inteligência Artificial acontece nos bastidores de nossas vidas. Desde algoritmos que otimizam o trânsito até assistentes pessoais que gerenciam nossas agendas, a tecnologia está se tornando invisível e indispensável. Especialistas preveem que, nos próximos anos, a integração será tão fluida que deixaremos de perceber onde a tecnologia termina e a assistência humana começa.",
-        imageKeywords: ["artificial intelligence", "future technology", "smart city"]
+        imageKeywords: ["artificial intelligence"],
+        imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80" // High quality AI image
     },
     otherStories: [
         {
             title: "Energia Solar: O Brasil na Liderança Global?",
             content: "Com um potencial inexplorado gigantesco, o Brasil se posiciona como um dos principais candidatos a liderar a transição energética mundial, apostando forte em fazendas solares.",
-            imageKeywords: ["solar energy", "brazil landscape", "renewable"]
+            imageKeywords: ["solar energy"],
+            imageUrl: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80"
         },
         {
             title: "O Renascimento da Exploração Lunar",
             content: "Agências espaciais e empresas privadas correm contra o tempo para estabelecer a primeira base permanente na Lua, abrindo portas para missões a Marte.",
-            imageKeywords: ["moon base", "space exploration", "astronaut"]
+            imageKeywords: ["moon"],
+            imageUrl: "https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?w=800&q=80"
         },
         {
             title: "Carros Voadores: Sonho ou Realidade Iminente?",
             content: "Projetos de eVTOLs avançam em ritmo acelerado nas grandes metrópoles, prometendo desafogar o trânsito urbano antes do que imaginávamos.",
-            imageKeywords: ["flying car", "urban future", "transportation"]
+            imageKeywords: ["flying car"],
+            imageUrl: "https://images.unsplash.com/photo-1558507357-12b236ce4370?w=800&q=80"
         },
         {
             title: "A Nova Era da Medicina Personalizada",
             content: "Tratamentos baseados em DNA estão permitindo curas específicas para doenças antes consideradas genéricas, mudando para sempre a saúde humana.",
-            imageKeywords: ["dna helix", "medical technology", "health"]
+            imageKeywords: ["dna"],
+            imageUrl: "https://images.unsplash.com/photo-1530482054429-cc491f61333b?w=800&q=80"
         },
         {
             title: "Home Office e a Economia Global",
             content: "Como o trabalho remoto transformou não apenas onde trabalhamos, mas como as cidades são planejadas e como a economia global flui.",
-            imageKeywords: ["remote work", "digital nomad", "home office"]
+            imageKeywords: ["remote work"],
+            imageUrl: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80"
         }
     ]
 };
