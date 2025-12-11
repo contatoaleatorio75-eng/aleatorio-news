@@ -47,7 +47,7 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
     while (retries > 0) {
         try {
             const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
+                model: 'gemini-1.5-flash',
                 contents: prompt,
                 config: {
                     tools: [{ googleSearch: {} }],
