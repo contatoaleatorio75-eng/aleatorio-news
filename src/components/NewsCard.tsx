@@ -15,14 +15,14 @@ export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
         <h3 className="text-lg font-bold text-slate-900 mb-2 flex-grow">{article.title}</h3>
         <p className="text-slate-600 text-sm mb-4 line-clamp-3">{article.content}</p>
         <div>
-          <h4 className="text-xs font-semibold text-yellow-600 mb-1">Saiba Mais:</h4>
+          <h4 className="text-xs font-semibold text-cyan-600 mb-1">Saiba Mais:</h4>
           {article.sources.slice(0, 1).map((source) => (
             <a
               key={source.uri}
               href={source.uri}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center text-xs text-slate-500 hover:text-yellow-600 transition-colors truncate"
+              className="flex items-center text-xs text-slate-500 hover:text-cyan-600 transition-colors truncate"
             >
               <SourceLinkIcon className="w-3 h-3 mr-1.5 flex-shrink-0" />
               <span className="truncate">{source.title || source.uri}</span>

@@ -27,7 +27,7 @@ export const NewsTicker: React.FC<NewsTickerProps> = ({ data }) => {
           animation-play-state: paused;
         }
       `}</style>
-      <div className="bg-yellow-500 text-slate-900 py-2 overflow-hidden ticker-container">
+      <div className="bg-cyan-500 text-white py-2 overflow-hidden ticker-container">
         <div className="whitespace-nowrap ticker-content flex">
           {tickerItems.map((item, index) => (
             <span key={index} className="mx-8 font-bold text-sm tracking-wider">

@@ -140,7 +140,7 @@ const App: React.FC = () => {
           </h1>
           <button
             onClick={handleUpdateOrViewAll}
-            className="px-5 py-2.5 bg-yellow-500 text-slate-900 font-bold rounded-lg hover:bg-yellow-400 transition-colors shadow-lg disabled:opacity-50"
+            className="px-5 py-2.5 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-600 transition-colors shadow-lg disabled:opacity-50"
             disabled={isLoading}
           >
             {selectedTopic ? "Ver Todos" : "Atualizar"}
@@ -152,7 +152,7 @@ const App: React.FC = () => {
         <p className="mb-2">&copy; {new Date().getFullYear()} ALEATORIONEWS.COM.BR - Todos os direitos reservados.</p>
         <p className="text-xs">
           Todo o conteúdo deste site é gerado por inteligência artificial e destina-se a fins de entretenimento e informação.
-          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.2 (2.5-Flash)
+          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.3 (Brand)
         </p>
       </footer>
     </div>
