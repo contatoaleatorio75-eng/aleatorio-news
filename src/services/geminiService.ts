@@ -1,4 +1,4 @@
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { NewsArticle, TickerData, Source } from '../types';
 
 interface GeminiNewsResponse {
@@ -25,33 +25,33 @@ interface GeminiTickerResponse {
     headlines: string[];
 }
 
-let ai: GoogleGenAI;
+let genAI: GoogleGenerativeAI;
 try {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
 
     if (!apiKey) {
         throw new Error("VITE_GEMINI_API_KEY not found in environment variables");
     }
-    ai = new GoogleGenAI({ apiKey });
+    genAI = new GoogleGenerativeAI(apiKey);
 } catch (e) {
     console.error("API Key not found or invalid. Please check your .env.local file and ensure VITE_GEMINI_API_KEY is set.");
     console.error(e);
 }
 
 const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
-    if (!ai) {
-        throw new Error("GoogleGenAI client is not initialized. Check API Key.");
+    if (!genAI) {
+        throw new Error("GoogleGenerativeAI client is not initialized. Check API Key.");
     }
 
     let retries = 3;
     while (retries > 0) {
         try {
-            const response = await ai.models.generateContent({
-                model: 'gemini-1.5-flash',
-                contents: prompt,
-            });
+            const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-            const textResponse = response.text;
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const textResponse = response.text();
+
             if (!textResponse) {
                 throw new Error("Empty response from API");
             }
