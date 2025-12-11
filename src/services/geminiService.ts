@@ -49,9 +49,6 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             const response = await ai.models.generateContent({
                 model: 'gemini-1.5-flash',
                 contents: prompt,
-                config: {
-                    tools: [{ googleSearch: {} }],
-                },
             });
 
             const textResponse = response.text;
@@ -64,9 +61,12 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             return data;
         } catch (error) {
             console.error(`API call failed. Retries left: ${retries - 1}`, error);
+            if (error instanceof Error) {
+                console.error("Error details:", error.message);
+            }
             retries--;
             if (retries === 0) {
-                throw new Error("Falha na comunicação com a IA após múltiplas tentativas.");
+                throw new Error("Falha na comunicação com a IA após múltiplas tentativas. Verifique o console para mais detalhes.");
             }
             await new Promise(res => setTimeout(res, 1000));
         }
@@ -110,8 +110,7 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
        2. The "trendingTopics" array must be populated with 5 distinct, relevant, and current trending topics in Brazil.`;
 
     const prompt = `
-    You are a creative writer for a news-style blog called ALEATORIO NEWS. Your task is to generate original content based on current events in Brazil.
-    You must use Google Search to understand the context of the topics, but you are STRICTLY PROHIBITED from copying, quoting, or summarizing text from any source.
+    You are a creative writer for a news-style blog called ALEATORIO NEWS. Your task is to generate original content based on your knowledge of current events and general topics in Brazil.
     Your output MUST be your own unique, originally generated content.
 
     Respond ONLY with a single valid JSON object wrapped in \`\`\`json markdown. Do not add any text before or after the JSON block.
