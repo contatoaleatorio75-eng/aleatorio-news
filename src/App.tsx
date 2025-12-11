@@ -152,7 +152,7 @@ const App: React.FC = () => {
         <p className="mb-2">&copy; {new Date().getFullYear()} ALEATORIONEWS.COM.BR - Todos os direitos reservados.</p>
         <p className="text-xs">
           Todo o conteúdo deste site é gerado por inteligência artificial e destina-se a fins de entretenimento e informação.
-          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.7 (Stable Images)
+          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.8 (Dynamic Content)
         </p>
       </footer>
     </div>

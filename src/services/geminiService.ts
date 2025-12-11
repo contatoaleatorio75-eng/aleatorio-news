@@ -27,47 +27,65 @@ interface GeminiTickerResponse {
     headlines: string[];
 }
 
-// MOCK DATA FOR FALLBACK
-const MOCK_NEWS: GeminiNewsResponse = {
-    trendingTopics: ["Inteligência Artificial", "Inovação Sustentável", "Exploração Espacial", "Carros Elétricos", "Futuro do Trabalho"],
-    mainStory: {
-        title: "A Revolução Silenciosa da IA no Cotidiano: O que Esperar do Futuro Próximo?",
-        content: "Enquanto muitos focam nos robôs de ficção científica, a verdadeira revolução da Inteligência Artificial acontece nos bastidores de nossas vidas. Desde algoritmos que otimizam o trânsito até assistentes pessoais que gerenciam nossas agendas, a tecnologia está se tornando invisível e indispensável. Especialistas preveem que, nos próximos anos, a integração será tão fluida que deixaremos de perceber onde a tecnologia termina e a assistência humana começa.",
-        imageKeywords: ["artificial intelligence"],
-        imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80" // High quality AI image
-    },
-    otherStories: [
-        {
-            title: "Energia Solar: O Brasil na Liderança Global?",
-            content: "Com um potencial inexplorado gigantesco, o Brasil se posiciona como um dos principais candidatos a liderar a transição energética mundial, apostando forte em fazendas solares.",
-            imageKeywords: ["solar energy"],
-            imageUrl: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80"
+// MOCK DATA FACTORY
+const getMockNews = (topic?: string | null): GeminiNewsResponse => {
+    const t = topic?.toLowerCase() || "";
+
+    if (t.includes("tecnologia") || t.includes("inovação")) {
+        return {
+            trendingTopics: ["IA Generativa", "Metaverso Industrial", "Cibersegurança", "5G no Brasil", "Chips Quânticos"],
+            mainStory: {
+                title: "O Salto Quântico: Computadores do Futuro Já São Realidade?",
+                content: "Laboratórios ao redor do mundo anunciam avanços significativos na computação quântica. O que antes parecia teoria distante, agora promete quebrar criptografias complexas e simular novos medicamentos em segundos. A corrida tecnológica entre grandes potências se intensifica, buscando a supremacia digital.",
+                imageKeywords: ["quantum computer"],
+                imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=1200&q=80"
+            },
+            otherStories: [
+                { title: "Smartphones Dobráveis", content: "A nova geração de celulares flexíveis promete durabilidade e telas ainda maiores.", imageKeywords: ["foldable phone"], imageUrl: "https://images.unsplash.com/photo-1616348436168-de43ad0db179?w=800&q=80" },
+                { title: "Drones de Entrega", content: "Empresas de logística testam entregas autônomas em condomínios de São Paulo.", imageKeywords: ["delivery drone"], imageUrl: "https://images.unsplash.com/photo-1579829366248-204fe8413f31?w=800&q=80" },
+                { title: "Carros Autônomos", content: "A legislação brasileira começa a se adaptar para os veículos sem motorista.", imageKeywords: ["autonomous car"], imageUrl: "https://images.unsplash.com/photo-1617788138017-80ad40651399?w=800&q=80" },
+                { title: "Realidade Aumentada", content: "Óculos inteligentes voltam à moda com novas funcionalidades para o trabalho.", imageKeywords: ["ar glasses"], imageUrl: "https://images.unsplash.com/photo-1535378437327-b7bc751d3885?w=800&q=80" },
+                { title: "Impressão 3D na Saúde", content: "Médicos imprimem próteses personalizadas de baixo custo em hospitais públicos.", imageKeywords: ["3d printing"], imageUrl: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80" }
+            ]
+        };
+    }
+
+    if (t.includes("economia") || t.includes("finanças") || t.includes("investimentos")) {
+        return {
+            trendingTopics: ["Taxa Selic", "Criptomoedas", "Bolsa de Valores", "Agronegócio", "Startups"],
+            mainStory: {
+                title: "Dólar e Juros: Como o Cenário Global Impacta seu Bolso",
+                content: "Com as recentes movimentações do Federal Reserve e as decisões do Banco Central, entender o mercado financeiro tornou-se essencial. Analistas explicam como proteger seus investimentos em tempos de volatilidade e quais setores prometem maior retorno no próximo semestre.",
+                imageKeywords: ["stock market"],
+                imageUrl: "https://images.unsplash.com/photo-1611974765270-ca12586343bb?w=1200&q=80"
+            },
+            otherStories: [
+                { title: "O Boom das Fintechs", content: "Bancos digitais continuam ganhando mercado e desafiando instituições tradicionais.", imageKeywords: ["fintech"], imageUrl: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&q=80" },
+                { title: "Criptoativos em Alta", content: "Bitcoin volta a testar resistências históricas com entrada de investidores institucionais.", imageKeywords: ["bitcoin"], imageUrl: "https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=800&q=80" },
+                { title: "Inflação Controlada?", content: "Novos índices mostram desaceleração nos preços dos alimentos, aliviando as famílias.", imageKeywords: ["supermarket"], imageUrl: "https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=800&q=80" },
+                { title: "Agronegócio 4.0", content: "Tecnologia no campo bate recordes de produtividade na safra de grãos.", imageKeywords: ["agriculture"], imageUrl: "https://images.unsplash.com/photo-1625246333195-bf436c7cb859?w=800&q=80" },
+                { title: "Imóveis Valorizados", content: "O mercado imobiliário aquece nas capitais com a volta dos escritórios presenciais.", imageKeywords: ["real estate"], imageUrl: "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?w=800&q=80" }
+            ]
+        };
+    }
+
+    // Default: General / AI / Future
+    return {
+        trendingTopics: ["Inteligência Artificial", "Inovação Sustentável", "Exploração Espacial", "Carros Elétricos", "Futuro do Trabalho"],
+        mainStory: {
+            title: "A Revolução Silenciosa da IA no Cotidiano: O que Esperar do Futuro Próximo?",
+            content: "Enquanto muitos focam nos robôs de ficção científica, a verdadeira revolução da Inteligência Artificial acontece nos bastidores de nossas vidas. Desde algoritmos que otimizam o trânsito até assistentes pessoais que gerenciam nossas agendas, a tecnologia está se tornando invisível e indispensável. Especialistas preveem que, nos próximos anos, a integração será tão fluida que deixaremos de perceber onde a tecnologia termina e a assistência humana começa.",
+            imageKeywords: ["artificial intelligence"],
+            imageUrl: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1200&q=80"
         },
-        {
-            title: "O Renascimento da Exploração Lunar",
-            content: "Agências espaciais e empresas privadas correm contra o tempo para estabelecer a primeira base permanente na Lua, abrindo portas para missões a Marte.",
-            imageKeywords: ["moon"],
-            imageUrl: "https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?w=800&q=80"
-        },
-        {
-            title: "Carros Voadores: Sonho ou Realidade Iminente?",
-            content: "Projetos de eVTOLs avançam em ritmo acelerado nas grandes metrópoles, prometendo desafogar o trânsito urbano antes do que imaginávamos.",
-            imageKeywords: ["flying car"],
-            imageUrl: "https://images.unsplash.com/photo-1558507357-12b236ce4370?w=800&q=80"
-        },
-        {
-            title: "A Nova Era da Medicina Personalizada",
-            content: "Tratamentos baseados em DNA estão permitindo curas específicas para doenças antes consideradas genéricas, mudando para sempre a saúde humana.",
-            imageKeywords: ["dna"],
-            imageUrl: "https://images.unsplash.com/photo-1530482054429-cc491f61333b?w=800&q=80"
-        },
-        {
-            title: "Home Office e a Economia Global",
-            content: "Como o trabalho remoto transformou não apenas onde trabalhamos, mas como as cidades são planejadas e como a economia global flui.",
-            imageKeywords: ["remote work"],
-            imageUrl: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80"
-        }
-    ]
+        otherStories: [
+            { title: "Energia Solar: O Brasil na Liderança Global?", content: "Com um potencial inexplorado gigantesco, o Brasil se posiciona com destaque.", imageKeywords: ["solar energy"], imageUrl: "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80" },
+            { title: "O Renascimento da Exploração Lunar", content: "Agências espaciais e empresas privadas correm contra o tempo para estabelecer bases.", imageKeywords: ["moon"], imageUrl: "https://images.unsplash.com/photo-1522030299830-16b8d3d049fe?w=800&q=80" },
+            { title: "Carros Voadores: Sonho ou Realidade?", content: "Projetos de eVTOLs avançam nas grandes metrópoles, prometendo desafogar o trânsito.", imageKeywords: ["flying car"], imageUrl: "https://images.unsplash.com/photo-1558507357-12b236ce4370?w=800&q=80" },
+            { title: "Medicina Personalizada", content: "Tratamentos baseados em DNA estão mudando para sempre a saúde humana.", imageKeywords: ["dna"], imageUrl: "https://images.unsplash.com/photo-1530482054429-cc491f61333b?w=800&q=80" },
+            { title: "Home Office e a Economia", content: "Como o trabalho remoto transformou o planejamento urbano e a economia.", imageKeywords: ["remote work"], imageUrl: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80" }
+        ]
+    };
 };
 
 const MOCK_TICKER: GeminiTickerResponse = {
@@ -118,16 +136,19 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             console.error(`API call failed. Retries left: ${retries - 1}`, error);
 
             // Fallback to MOCK DATA on error (429, 404, 500)
-            retries--;
-            if (retries === 0) {
-                console.warn("All retries failed. Serving MOCK DATA to ensure site stability.");
-                const isNewsRequest = prompt.includes("trending topics") || prompt.includes("original blog-style articles");
-                return (isNewsRequest ? MOCK_NEWS : MOCK_TICKER) as unknown as T;
+            // Extract topic from prompt for better mock data
+            let topic = null;
+            if (prompt.includes('topic: "')) {
+                const match = prompt.match(/topic: "([^"]+)"/);
+                if (match) topic = match[1];
             }
-            await new Promise(res => setTimeout(res, 1000));
+
+            return (isNewsRequest ? getMockNews(topic) : MOCK_TICKER) as unknown as T;
         }
+        await new Promise(res => setTimeout(res, 1000));
     }
-    return null;
+}
+return null;
 };
 
 const createLearnMoreSource = (title: string): Source[] => {
