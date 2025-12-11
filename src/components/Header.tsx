@@ -1,11 +1,17 @@
 import React from 'react';
 import logo from '../assets/logo.jpg';
 
-export const Header: React.FC = () => {
+interface HeaderProps {
+  onTopicClick: (topic: string) => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onTopicClick }) => {
+  const categories = ["Ciência", "Tecnologia", "Atualidades"];
+
   return (
     <header className="bg-white/90 backdrop-blur-sm sticky top-0 z-50 shadow-sm border-b border-slate-200">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-3 cursor-pointer" onClick={() => onTopicClick("")}>
           <img
             src={logo}
             alt="Aleatorio Logo"
@@ -27,9 +33,15 @@ export const Header: React.FC = () => {
           </a>
         </div>
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#" className="text-slate-600 hover:text-cyan-600 transition-colors font-semibold">Ciência</a>
-          <a href="#" className="text-slate-600 hover:text-cyan-600 transition-colors font-semibold">Tecnologia</a>
-          <a href="#" className="text-slate-600 hover:text-cyan-600 transition-colors font-semibold">Atualidades</a>
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => onTopicClick(category)}
+              className="text-slate-600 hover:text-cyan-600 transition-colors font-semibold"
+            >
+              {category}
+            </button>
+          ))}
         </nav>
       </div>
     </header>
