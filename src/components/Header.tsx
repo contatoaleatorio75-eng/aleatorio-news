@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
             alt="Aleatorio Logo"
             className="w-12 h-12 rounded-full object-cover shadow-sm ring-2 ring-cyan-500/20"
           />
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-wider">
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tighter">
             ALEATORIO<span className="text-cyan-600">NEWS</span>
           </h1>
         </div>
