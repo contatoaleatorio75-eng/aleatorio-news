@@ -46,7 +46,7 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
     let retries = 3;
     while (retries > 0) {
         try {
-            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
             const result = await model.generateContent(prompt);
             const response = await result.response;
@@ -61,6 +61,12 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             return data;
         } catch (error) {
             console.error(`API call failed. Retries left: ${retries - 1}`, error);
+
+            // Check for 429 Quota Exceeded specifically
+            if (error instanceof Error && error.message.includes("429")) {
+                throw new Error("Cota de acesso excedida temporariamente. O site está muito popular! Tente novamente mais tarde ou amanhã.");
+            }
+
             if (error instanceof Error) {
                 console.error("Error details:", error.message);
             }
