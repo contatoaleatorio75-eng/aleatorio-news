@@ -136,19 +136,24 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             console.error(`API call failed. Retries left: ${retries - 1}`, error);
 
             // Fallback to MOCK DATA on error (429, 404, 500)
-            // Extract topic from prompt for better mock data
-            let topic = null;
-            if (prompt.includes('topic: "')) {
-                const match = prompt.match(/topic: "([^"]+)"/);
-                if (match) topic = match[1];
-            }
+            retries--;
+            if (retries === 0) {
+                console.warn("All retries failed. Serving MOCK DATA to ensure site stability.");
+                const isNewsRequest = prompt.includes("trending topics") || prompt.includes("original blog-style articles");
 
-            return (isNewsRequest ? getMockNews(topic) : MOCK_TICKER) as unknown as T;
+                // Extract topic from prompt for better mock data
+                let topic = null;
+                if (prompt.includes('topic: "')) {
+                    const match = prompt.match(/topic: "([^"]+)"/);
+                    if (match) topic = match[1];
+                }
+
+                return (isNewsRequest ? getMockNews(topic) : MOCK_TICKER) as unknown as T;
+            }
+            await new Promise(res => setTimeout(res, 1000));
         }
-        await new Promise(res => setTimeout(res, 1000));
     }
-}
-return null;
+    return null;
 };
 
 const createLearnMoreSource = (title: string): Source[] => {
