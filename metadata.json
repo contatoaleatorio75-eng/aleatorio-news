@@ -1,0 +1,5 @@
+{
+  "name": "ALEATORIO NEWS",
+  "description": "A news blog-style website that provides real-time news updates using Google Trends, with a design inspired by modern news portals. Features include a main story, a grid of articles, trending topics, and a real-time news ticker.",
+  "requestFramePermissions": []
+}
