@@ -25,6 +25,53 @@ interface GeminiTickerResponse {
     headlines: string[];
 }
 
+// MOCK DATA FOR FALLBACK
+const MOCK_NEWS: GeminiNewsResponse = {
+    trendingTopics: ["Inteligência Artificial", "Inovação Sustentável", "Exploração Espacial", "Carros Elétricos", "Futuro do Trabalho"],
+    mainStory: {
+        title: "A Revolução Silenciosa da IA no Cotidiano: O que Esperar do Futuro Próximo?",
+        content: "Enquanto muitos focam nos robôs de ficção científica, a verdadeira revolução da Inteligência Artificial acontece nos bastidores de nossas vidas. Desde algoritmos que otimizam o trânsito até assistentes pessoais que gerenciam nossas agendas, a tecnologia está se tornando invisível e indispensável. Especialistas preveem que, nos próximos anos, a integração será tão fluida que deixaremos de perceber onde a tecnologia termina e a assistência humana começa.",
+        imageKeywords: ["artificial intelligence", "future technology", "smart city"]
+    },
+    otherStories: [
+        {
+            title: "Energia Solar: O Brasil na Liderança Global?",
+            content: "Com um potencial inexplorado gigantesco, o Brasil se posiciona como um dos principais candidatos a liderar a transição energética mundial, apostando forte em fazendas solares.",
+            imageKeywords: ["solar energy", "brazil landscape", "renewable"]
+        },
+        {
+            title: "O Renascimento da Exploração Lunar",
+            content: "Agências espaciais e empresas privadas correm contra o tempo para estabelecer a primeira base permanente na Lua, abrindo portas para missões a Marte.",
+            imageKeywords: ["moon base", "space exploration", "astronaut"]
+        },
+        {
+            title: "Carros Voadores: Sonho ou Realidade Iminente?",
+            content: "Projetos de eVTOLs avançam em ritmo acelerado nas grandes metrópoles, prometendo desafogar o trânsito urbano antes do que imaginávamos.",
+            imageKeywords: ["flying car", "urban future", "transportation"]
+        },
+        {
+            title: "A Nova Era da Medicina Personalizada",
+            content: "Tratamentos baseados em DNA estão permitindo curas específicas para doenças antes consideradas genéricas, mudando para sempre a saúde humana.",
+            imageKeywords: ["dna helix", "medical technology", "health"]
+        },
+        {
+            title: "Home Office e a Economia Global",
+            content: "Como o trabalho remoto transformou não apenas onde trabalhamos, mas como as cidades são planejadas e como a economia global flui.",
+            imageKeywords: ["remote work", "digital nomad", "home office"]
+        }
+    ]
+};
+
+const MOCK_TICKER: GeminiTickerResponse = {
+    weather: { city: "São Paulo", temperature: "26°C", condition: "Parcialmente Nublado" },
+    dollarRate: "R$ 5,65",
+    headlines: [
+        "Tecnologia avança: Novos chips prometem dobrar velocidade de processamento.",
+        "Mercado financeiro reage positivamente às novas políticas econômicas.",
+        "Esporte: Brasil garante vaga na final do campeonato mundial."
+    ]
+};
+
 let genAI: GoogleGenerativeAI;
 try {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
@@ -62,18 +109,12 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
         } catch (error) {
             console.error(`API call failed. Retries left: ${retries - 1}`, error);
 
-            // Check for 429 Quota Exceeded specifically
-            if (error instanceof Error && error.message.includes("429")) {
-                throw new Error("Cota de acesso excedida temporariamente. O site está muito popular! Tente novamente mais tarde ou amanhã.");
-            }
-
-            if (error instanceof Error) {
-                console.error("Error details:", error.message);
-            }
+            // Fallback to MOCK DATA on error (429, 404, 500)
             retries--;
             if (retries === 0) {
-                const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
-                throw new Error(`Falha na IA: ${errorMessage}`);
+                console.warn("All retries failed. Serving MOCK DATA to ensure site stability.");
+                const isNewsRequest = prompt.includes("trending topics") || prompt.includes("original blog-style articles");
+                return (isNewsRequest ? MOCK_NEWS : MOCK_TICKER) as unknown as T;
             }
             await new Promise(res => setTimeout(res, 1000));
         }
