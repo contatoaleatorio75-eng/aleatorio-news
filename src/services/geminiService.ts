@@ -66,7 +66,23 @@ const fetchWithRetry = async <T,>(prompt: string): Promise<T | null> => {
             }
             retries--;
             if (retries === 0) {
-                const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
+                let errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
+
+                // DIAGNOSTIC STEP: Try to list models to see what IS available
+                try {
+                    const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string;
+                    const modelsReq = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
+                    if (modelsReq.ok) {
+                        const modelsData = await modelsReq.json();
+                        const modelNames = modelsData.models?.map((m: any) => m.name).join(", ") || "Nenhum modelo encontrado";
+                        errorMessage += ` | MODELOS DISPONÍVEIS NA SUA CONTA: ${modelNames}`;
+                    } else {
+                        errorMessage += ` | FALHA AO LISTAR MODELOS: Status ${modelsReq.status}`;
+                    }
+                } catch (diagErr) {
+                    console.error("Diagnosis failed", diagErr);
+                }
+
                 throw new Error(`Falha na IA: ${errorMessage}`);
             }
             await new Promise(res => setTimeout(res, 1000));
