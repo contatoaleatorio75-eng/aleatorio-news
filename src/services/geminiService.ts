@@ -178,10 +178,17 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
     // Check cache
     const cached = localStorage.getItem(CACHE_KEY);
     if (cached) {
-        const { timestamp, data } = JSON.parse(cached);
-        if (Date.now() - timestamp < CACHE_DURATION) {
-            console.log("Serving news from cache");
-            return data;
+        try {
+            const { timestamp, data } = JSON.parse(cached);
+            // Ensure data is valid and has the required structure
+            if (Date.now() - timestamp < CACHE_DURATION && data && data.mainStory) {
+                console.log("Serving news from cache");
+                return data;
+            } else {
+                localStorage.removeItem(CACHE_KEY); // Clean up bad/stale cache
+            }
+        } catch (e) {
+            localStorage.removeItem(CACHE_KEY);
         }
     }
 
@@ -209,7 +216,13 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
 
     const data = await fetchWithRetry<GeminiNewsResponse>(prompt);
 
-    if (!data) return null;
+    if (!data || !data.mainStory) {
+        console.error("Invalid or missing news data structure", data);
+        // Force mock fallback if API returned garbage
+        const fallback = getMockNews(topic);
+        if (!fallback) return null;
+        Object.assign(data || {}, fallback);
+    }
 
     const imagePromises = [
         generateImage(data.mainStory.imageKeywords || ["news"]),
