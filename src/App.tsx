@@ -19,6 +19,7 @@ const App: React.FC = () => {
   const [otherStories, setOtherStories] = useState<NewsArticle[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
   const [tickerData, setTickerData] = useState<TickerData | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [archivedArticles, setArchivedArticles] = useState<NewsArticle[]>([]);
