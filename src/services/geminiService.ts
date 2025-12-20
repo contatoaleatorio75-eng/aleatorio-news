@@ -166,7 +166,7 @@ const createLearnMoreSource = (title: string): Source[] => {
 const generateImage = async (keywords: string[]): Promise<string> => {
     // FIX: Unsplash source is deprecated. Switched to Pollinations.ai for reliable AI image generation.
     const prompt = keywords.join(' ');
-    const fallbackImageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=800&height=450&nologo=true&seed=${Math.random()}`;
+    const fallbackImageUrl = `https://pollinations.ai/p/${encodeURIComponent(prompt)}?width=800&height=600&seed=${Math.random()}`;
     return fallbackImageUrl;
 };
 
