@@ -173,7 +173,7 @@ const generateImage = async (keywords: string[]): Promise<string> => {
 
 export const getNewsData = async (topic?: string | null): Promise<{ mainStory: NewsArticle, otherStories: NewsArticle[], trendingTopics: string[] } | null> => {
     const CACHE_KEY = `news_data_${topic || 'default'}`;
-    const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+    const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
     // Check cache
     const cached = localStorage.getItem(CACHE_KEY);
@@ -186,40 +186,26 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
     }
 
     const topicInstruction = topic
-        ? `1. ALL generated content (mainStory and otherStories) MUST be original blog-style articles about the topic: "${topic}".
-       2. The "trendingTopics" array in the JSON MUST be empty.`
-        : `1. The content should be original blog-style articles about a variety of currently trending topics in Brazil.
-       2. The "trendingTopics" array must be populated with 5 distinct, relevant, and current trending topics in Brazil.`;
+        ? `CRITICAL: The topic is "${topic}". ALL 6 articles (1 mainStory and 5 otherStories) MUST be uniquely about "${topic}". DO NOT talk about anything else.`
+        : `Generate articles about a variety of currently trending topics in Brazil. Populate "trendingTopics" with 5 current trends.`;
 
     const prompt = `
-    You are a creative writer for a news-style blog called ALEATORIO NEWS. Your task is to generate original content based on your knowledge of current events and general topics in Brazil.
-    Your output MUST be your own unique, originally generated content.
+    You are a professional journalist for ALEATORIO NEWS. 
+    Generate a JSON response with news content.
+    ${topicInstruction}
 
-    Respond ONLY with a single valid JSON object wrapped in \`\`\`json markdown. Do not add any text before or after the JSON block.
-    The JSON structure MUST be:
+    Structure:
     {
       "trendingTopics": ["topic1", "topic2", "topic3", "topic4", "topic5"],
-      "mainStory": {
-        "title": "An engaging and creative title for the main article",
-        "content": "A detailed original article with at least 80 words, written in an engaging blog style.",
-        "imageKeywords": ["keyword1", "keyword2"]
-      },
+      "mainStory": { "title": "...", "content": "...", "imageKeywords": [...] },
       "otherStories": [
-        { "title": "Creative title for story 1", "content": "A short, original blurb for story 1 (at least 30 words).", "imageKeywords": ["keyword3", "keyword4"] },
-        { "title": "Creative title for story 2", "content": "A short, original blurb for story 2 (at least 30 words).", "imageKeywords": ["keyword5", "keyword6"] },
-        { "title": "Creative title for story 3", "content": "A short, original blurb for story 3 (at least 30 words).", "imageKeywords": ["keyword7", "keyword8"] },
-        { "title": "Creative title for story 4", "content": "A short, original blurb for story 4 (at least 30 words).", "imageKeywords": ["keyword9", "keyword10"] },
-        { "title": "Creative title for story 5", "content": "A short, original blurb for story 5 (at least 30 words).", "imageKeywords": ["keyword11", "keyword12"] }
+        { "title": "...", "content": "...", "imageKeywords": [...] },
+        ... 4 more stories
       ]
     }
-
-    Rules:
-    ${topicInstruction}
-    3. All 'title' and 'content' fields must be in Brazilian Portuguese.
-    4. All 'imageKeywords' must be in English and suitable for a stock photo search (e.g., "abstract", "technology", "brazil politics").
-    5. The generated content must be completely original and written by you. Do not summarize.
-    6. Ensure the JSON is well-formed and valid.
+    All text in Brazilian Portuguese.
     `;
+
 
     const data = await fetchWithRetry<GeminiNewsResponse>(prompt);
 
@@ -257,7 +243,7 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
 
 export const getTickerData = async (): Promise<TickerData | null> => {
     const CACHE_KEY = 'ticker_data';
-    const CACHE_DURATION = 60 * 60 * 1000; // 1 hour
+    const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
     // Check cache
     const cached = localStorage.getItem(CACHE_KEY);
