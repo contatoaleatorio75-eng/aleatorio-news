@@ -212,8 +212,8 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
     if (!data) return null;
 
     const imagePromises = [
-        generateImage(data.mainStory.imageKeywords),
-        ...data.otherStories.map(story => generateImage(story.imageKeywords))
+        generateImage(data.mainStory.imageKeywords || ["news"]),
+        ...(data.otherStories || []).map(story => generateImage(story.imageKeywords || ["news"]))
     ];
 
     const [mainStoryImageUrl, ...otherStoriesImageUrls] = await Promise.all(imagePromises);
@@ -225,16 +225,16 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
             id: `main-${Date.now()}`,
             timestamp,
             imageUrl: mainStoryImageUrl,
-            sources: createLearnMoreSource(data.mainStory.title),
+            sources: createLearnMoreSource(data.mainStory.title || "Notícia Aleatoria"),
         },
-        otherStories: data.otherStories.map((story, index) => ({
+        otherStories: (data.otherStories || []).map((story, index) => ({
             ...story,
             id: `other-${Date.now()}-${index}`,
             timestamp,
-            imageUrl: otherStoriesImageUrls[index],
-            sources: createLearnMoreSource(story.title),
+            imageUrl: otherStoriesImageUrls[index] || "https://images.unsplash.com/photo-1504711441094-74d03e832d78?w=800&q=80",
+            sources: createLearnMoreSource(story.title || "Notícia Aleatoria"),
         })),
-        trendingTopics: data.trendingTopics,
+        trendingTopics: data.trendingTopics || [],
     };
 
     // Save to cache
