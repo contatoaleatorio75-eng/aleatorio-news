@@ -218,14 +218,19 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
 
     const [mainStoryImageUrl, ...otherStoriesImageUrls] = await Promise.all(imagePromises);
 
+    const timestamp = new Date().toISOString();
     const result = {
         mainStory: {
             ...data.mainStory,
+            id: `main-${Date.now()}`,
+            timestamp,
             imageUrl: mainStoryImageUrl,
             sources: createLearnMoreSource(data.mainStory.title),
         },
         otherStories: data.otherStories.map((story, index) => ({
             ...story,
+            id: `other-${Date.now()}-${index}`,
+            timestamp,
             imageUrl: otherStoriesImageUrls[index],
             sources: createLearnMoreSource(story.title),
         })),

@@ -7,6 +7,7 @@ import { MainStory } from './components/MainStory';
 import { NewsCard } from './components/NewsCard';
 import { AdPlaceholder } from './components/AdPlaceholder';
 import { Spinner } from './components/Spinner';
+import { Archive } from './components/Archive';
 import { getNewsData, getTickerData } from './services/geminiService';
 import { initializeAdSense } from './utils/adsense';
 import type { NewsArticle, TickerData } from './types';
@@ -18,9 +19,36 @@ const App: React.FC = () => {
   const [otherStories, setOtherStories] = useState<NewsArticle[]>([]);
   const [topics, setTopics] = useState<string[]>([]);
   const [tickerData, setTickerData] = useState<TickerData | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [archivedArticles, setArchivedArticles] = useState<NewsArticle[]>([]);
+  const [isArchiveOpen, setIsArchiveOpen] = useState(false);
+
+  // Load archive on mount
+  useEffect(() => {
+    const saved = localStorage.getItem('news_history');
+    if (saved) {
+      try {
+        setArchivedArticles(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse news history", e);
+      }
+    }
+  }, []);
+
+  // Save to archive helper
+  const addToArchive = (main: NewsArticle, others: NewsArticle[]) => {
+    setArchivedArticles(prev => {
+      const allNew = [main, ...others];
+      // Filter out duplicates based on title (simple check)
+      const filteredNew = allNew.filter(a => !prev.some(p => p.title === a.title));
+      if (filteredNew.length === 0) return prev;
+
+      const updated = [...filteredNew, ...prev].slice(0, 50); // Keep last 50
+      localStorage.setItem('news_history', JSON.stringify(updated));
+      return updated;
+    });
+  };
 
   const fetchNewsAndTopics = useCallback(async (topic?: string | null) => {
     setIsLoading(true);
@@ -30,6 +58,7 @@ const App: React.FC = () => {
       if (data) {
         setMainStory(data.mainStory);
         setOtherStories(data.otherStories);
+        addToArchive(data.mainStory, data.otherStories);
         if (!topic && data.trendingTopics.length > 0) {
           setTopics(data.trendingTopics);
         }
@@ -138,16 +167,33 @@ const App: React.FC = () => {
           <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
             {selectedTopic ? selectedTopic : "Em Destaque"}
           </h1>
-          <button
-            onClick={handleUpdateOrViewAll}
-            className="px-5 py-2.5 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-600 transition-colors shadow-lg disabled:opacity-50"
-            disabled={isLoading}
-          >
-            {selectedTopic ? "Ver Todos" : "Atualizar"}
-          </button>
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setIsArchiveOpen(true)}
+              className="px-4 py-2 bg-slate-100 text-slate-600 font-bold rounded-lg hover:bg-slate-200 transition-colors border border-slate-200 flex items-center"
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Histórico
+            </button>
+            <button
+              onClick={handleUpdateOrViewAll}
+              className="px-5 py-2.5 bg-cyan-500 text-white font-bold rounded-lg hover:bg-cyan-600 transition-colors shadow-lg disabled:opacity-50"
+              disabled={isLoading}
+            >
+              {selectedTopic ? "Ver Todos" : "Atualizar"}
+            </button>
+          </div>
         </div>
         {renderContent()}
       </main>
+
+      <Archive
+        articles={archivedArticles}
+        isOpen={isArchiveOpen}
+        onClose={() => setIsArchiveOpen(false)}
+      />
       <footer className="bg-white text-center p-6 text-sm text-slate-500 border-t border-slate-200">
         <p className="mb-2">&copy; {new Date().getFullYear()} ALEATORIONEWS.COM.BR - Todos os direitos reservados.</p>
         <p className="text-xs">

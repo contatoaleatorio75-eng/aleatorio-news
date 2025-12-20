@@ -5,6 +5,8 @@ export interface Source {
 }
 
 export interface NewsArticle {
+  id?: string;
+  timestamp?: string;
   title: string;
   content: string;
   imageUrl: string;
