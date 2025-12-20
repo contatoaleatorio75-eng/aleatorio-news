@@ -9,7 +9,7 @@ interface MainStoryProps {
 
 export const MainStory: React.FC<MainStoryProps> = ({ article }) => {
   return (
-    <div className="bg-white rounded-lg shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0 border border-slate-100">
+    <div className="bg-white rounded-xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 gap-0 border border-slate-100 transform hover:scale-[1.01] transition-transform duration-500">
       <div className="relative h-64 lg:h-auto">
         <img
           src={article.imageUrl}

@@ -213,7 +213,7 @@ export const getNewsData = async (topic?: string | null, force: boolean = false)
       "mainStory": { "title": "...", "content": "...", "imageKeywords": [...] },
       "otherStories": [
         { "title": "...", "content": "...", "imageKeywords": [...] },
-        ... 4 more stories
+        ... 6 more stories (Total 7)
       ]
     }
     All text in Brazilian Portuguese.

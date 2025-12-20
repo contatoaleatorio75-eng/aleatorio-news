@@ -136,21 +136,32 @@ const App: React.FC = () => {
     }
 
     return (
-      <>
-        {mainStory && <MainStory article={mainStory} />}
-        <div className="my-8 grid grid-cols-1 md:grid-cols-12 gap-8">
-          <div className="md:col-span-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {otherStories.slice(0, 3).map((story, index) => (
-                <NewsCard key={index} article={story} />
-              ))}
-            </div>
-          </div>
-          <div className="md:col-span-4">
-            <AdPlaceholder />
-          </div>
+      <div className="space-y-12">
+        {mainStory && (
+          <section>
+            <MainStory article={mainStory} />
+          </section>
+        )}
+
+        <div className="py-4 border-y border-slate-200 bg-white/50">
+          <AdPlaceholder />
         </div>
-      </>
+
+        <section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {otherStories.map((story, index) => (
+              <React.Fragment key={index}>
+                <NewsCard article={story} />
+                {/* Optional: Add middle-grid ad if we had many more, for now 8 items is fine */}
+              </React.Fragment>
+            ))}
+          </div>
+        </section>
+
+        <div className="py-10 border-t border-slate-200">
+          <AdPlaceholder />
+        </div>
+      </div>
     );
   };
 

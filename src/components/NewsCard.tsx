@@ -9,7 +9,7 @@ interface NewsCardProps {
 
 export const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col h-full transform hover:-translate-y-1 transition-transform duration-300 border border-slate-100">
+    <div className="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col h-full transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 border border-slate-100">
       <img
         src={article.imageUrl}
         alt={article.title}
