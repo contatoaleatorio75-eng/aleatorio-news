@@ -51,11 +51,11 @@ const App: React.FC = () => {
     });
   };
 
-  const fetchNewsAndTopics = useCallback(async (topic?: string | null) => {
+  const fetchNewsAndTopics = useCallback(async (topic?: string | null, force: boolean = false) => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await getNewsData(topic);
+      const data = await getNewsData(topic, force);
       if (data) {
         setMainStory(data.mainStory);
         setOtherStories(data.otherStories);
@@ -97,15 +97,15 @@ const App: React.FC = () => {
 
   const handleTopicClick = (topic: string) => {
     setSelectedTopic(topic);
-    fetchNewsAndTopics(topic);
+    fetchNewsAndTopics(topic, true); // Force refresh on topic click
   };
 
   const handleUpdateOrViewAll = () => {
     if (selectedTopic) {
       setSelectedTopic(null);
-      fetchNewsAndTopics();
+      fetchNewsAndTopics(null, true);
     } else {
-      fetchNewsAndTopics();
+      fetchNewsAndTopics(null, true);
     }
   };
 
@@ -126,7 +126,7 @@ const App: React.FC = () => {
           <h2 className="text-2xl font-bold mb-2">Ops! Algo deu errado.</h2>
           <p>{error}</p>
           <button
-            onClick={() => fetchNewsAndTopics(selectedTopic)}
+            onClick={() => fetchNewsAndTopics(selectedTopic, true)}
             className="mt-4 px-6 py-2 bg-yellow-500 text-slate-900 font-bold rounded-lg hover:bg-yellow-400 transition-colors"
           >
             Tentar Novamente

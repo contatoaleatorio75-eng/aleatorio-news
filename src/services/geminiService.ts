@@ -171,25 +171,29 @@ const generateImage = async (keywords: string[]): Promise<string> => {
 };
 
 
-export const getNewsData = async (topic?: string | null): Promise<{ mainStory: NewsArticle, otherStories: NewsArticle[], trendingTopics: string[] } | null> => {
+export const getNewsData = async (topic?: string | null, force: boolean = false): Promise<{ mainStory: NewsArticle, otherStories: NewsArticle[], trendingTopics: string[] } | null> => {
     const CACHE_KEY = `news_data_${topic || 'default'}`;
     const CACHE_DURATION = 15 * 60 * 1000; // 15 minutes
 
     // Check cache
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-        try {
-            const { timestamp, data } = JSON.parse(cached);
-            // Ensure data is valid and has the required structure
-            if (Date.now() - timestamp < CACHE_DURATION && data && data.mainStory) {
-                console.log("Serving news from cache");
-                return data;
-            } else {
-                localStorage.removeItem(CACHE_KEY); // Clean up bad/stale cache
+    if (!force) {
+        const cached = localStorage.getItem(CACHE_KEY);
+        if (cached) {
+            try {
+                const { timestamp, data } = JSON.parse(cached);
+                // Ensure data is valid and has the required structure
+                if (Date.now() - timestamp < CACHE_DURATION && data && data.mainStory) {
+                    console.log("Serving news from cache");
+                    return data;
+                } else {
+                    localStorage.removeItem(CACHE_KEY); // Clean up bad/stale cache
+                }
+            } catch (e) {
+                localStorage.removeItem(CACHE_KEY);
             }
-        } catch (e) {
-            localStorage.removeItem(CACHE_KEY);
         }
+    } else {
+        localStorage.removeItem(CACHE_KEY);
     }
 
     const topicInstruction = topic
@@ -197,9 +201,11 @@ export const getNewsData = async (topic?: string | null): Promise<{ mainStory: N
         : `Generate articles about a variety of currently trending topics in Brazil. Populate "trendingTopics" with 5 current trends.`;
 
     const prompt = `
+    Timestamp: ${new Date().toISOString()} - ${Math.random()}
     You are a professional journalist for ALEATORIO NEWS. 
-    Generate a JSON response with news content.
+    Generate a JSON response with fresh, unique news content.
     ${topicInstruction}
+
 
     Structure:
     {
