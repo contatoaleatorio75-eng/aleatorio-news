@@ -8,6 +8,7 @@ import { NewsCard } from './components/NewsCard';
 import { AdPlaceholder } from './components/AdPlaceholder';
 import { Spinner } from './components/Spinner';
 import { Archive } from './components/Archive';
+import { CookieNotice } from './components/CookieNotice';
 import { getNewsData, getTickerData } from './services/geminiService';
 import { initializeAdSense } from './utils/adsense';
 import type { NewsArticle, TickerData } from './types';
@@ -210,9 +211,10 @@ const App: React.FC = () => {
         <p className="mb-2">&copy; {new Date().getFullYear()} ALEATORIONEWS.COM.BR - Todos os direitos reservados.</p>
         <p className="text-xs">
           Todo o conteúdo deste site é gerado por inteligência artificial e destina-se a fins de entretenimento e informação.
-          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.9.5 (AdSense Ready)
+          As imagens são fornecidas por Unsplash. O conteúdo não representa jornalismo factual. v1.9.6 (AdSense Compliant)
         </p>
       </footer>
+      <CookieNotice />
     </div>
   );
 };
